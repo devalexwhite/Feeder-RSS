@@ -37,7 +37,7 @@
 
 	<!-- Start UI settings -->
 	<h2 class="text-base font-semibold leading-7 text-gray-900 mt-16">UI Settings</h2>
-	<p class="mt-1 text-sm leading-6 text-gray-600 mb-8">Customize how the feeed appears in Feedly.</p>
+	<p class="mt-1 text-sm leading-6 text-gray-600 mb-8">Customize how the feeed appears in FeederRSS.</p>
 	<div class="flex flex-col gap-8">
 		<!-- Show HTML -->
 		<div class="relative flex items-start">
