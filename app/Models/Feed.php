@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use Feed as FeedParser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Feed as FeedParser;
 
 class Feed extends Model
 {
@@ -38,7 +39,7 @@ class Feed extends Model
         return $this->hasMany(FeedItem::class)->orderBy('pub_date', 'desc');
     }
 
-    public function parseFeed()
+    public function parseFeed(): void
     {
         $rss = FeedParser::loadRss($this->url);
         $latestItem = $this->feedItems()->latest('pub_date')->first();
@@ -49,13 +50,13 @@ class Feed extends Model
 
 
         foreach ($rss->item as $item) {
-            if ($latestItem && \Carbon\Carbon::parse($item->pubDate) <= \Carbon\Carbon::parse($latestItem->pub_date)) {
+            if ($latestItem && Carbon::parse($item->pubDate) <= Carbon::parse($latestItem->pub_date)) {
                 break;
             }
             $this->feedItems()->create([
                 'title' => $item->title,
                 'link' => $item->link,
-                'pub_date' => $item->pubDate,
+                'pub_date' => Carbon::parse($item->pubDate),
                 'description' => $item->description,
                 'content' => $item->children('dc', true)->encoded,
                 'creator' => $item->children('dc', true)->creator,
